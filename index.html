@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#07130d">
+
+    <title>GENESIS PARK</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #07130d;
+            color: #d8f3dc;
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            background: #0b1f14;
+            border-bottom: 1px solid #294d36;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: 4px;
+        }
+
+        .subtitle {
+            margin-top: 8px;
+            color: #7fa98a;
+            font-size: 13px;
+        }
+
+        main {
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .status {
+            border: 1px solid #315c3f;
+            background: #0c2115;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .status-title {
+            color: #78c98b;
+            font-size: 12px;
+            letter-spacing: 2px;
+        }
+
+        .status-value {
+            font-size: 24px;
+            margin-top: 8px;
+        }
+
+        .card {
+            background: #0a1a11;
+            border: 1px solid #294d36;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #9be7a9;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 10px;
+            background: #173b24;
+            color: #d8f3dc;
+            border: 1px solid #4c8b5b;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background: #225731;
+        }
+
+        #location {
+            margin-top: 15px;
+            color: #9be7a9;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #52705b;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>GENESIS PARK</h1>
+    <div class="subtitle">
+        DINOSAUR MONITORING SYSTEM
+    </div>
+</header>
+
+<main>
+
+    <div class="status">
+        <div class="status-title">
+            PARK STATUS
+        </div>
+
+        <div class="status-value">
+            ● SYSTEM ONLINE
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>🦖 Dinosaur Monitoring</h2>
+
+        <p>
+            Sistema de seguimiento de fauna prehistórica
+            de Genesis Park.
+        </p>
+
+        <button onclick="locatePlayer()">
+            📍 LOCALIZAR MI POSICIÓN
+        </button>
+
+        <div id="location">
+            Posición: desconocida
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>🛰️ Parque</h2>
+
+        <p>
+            Estado de las instalaciones:
+            <strong>OPERATIVO</strong>
+        </p>
+
+        <p>
+            Señal de comunicación:
+            <strong>ESTABLE</strong>
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>⚠️ Alertas</h2>
+
+        <p>
+            No existen alertas activas.
+        </p>
+    </div>
+
+</main>
+
+<footer>
+    GENESIS PARK © 2026
+</footer>
+
+<script>
+
+function locatePlayer() {
+
+    const locationText =
+        document.getElementById("location");
+
+    if (!navigator.geolocation) {
+
+        locationText.innerText =
+            "La geolocalización no está disponible.";
+
+        return;
+    }
+
+    locationText.innerText =
+        "Obteniendo posición...";
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position) {
+
+            const latitude =
+                position.coords.latitude;
+
+            const longitude =
+                position.coords.longitude;
+
+            locationText.innerText =
+                "Latitud: " + latitude +
+                " | Longitud: " + longitude;
+
+        },
+
+        function() {
+
+            locationText.innerText =
+                "No se pudo obtener tu posición.";
+
+        }
+    );
+}
+
+</script>
+
+</body>
+</html>
