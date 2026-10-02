@@ -1,221 +1,1120 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 
-    <meta name="theme-color" content="#07130d">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-    <title>GENESIS PARK</title>
+<meta name="theme-color"
+content="#06110b">
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<title>Genesis Park Control</title>
 
-        body {
-            margin: 0;
-            background: #07130d;
-            color: #d8f3dc;
-            font-family: Arial, sans-serif;
-        }
+<style>
 
-        header {
-            background: #0b1f14;
-            border-bottom: 1px solid #294d36;
-            padding: 20px;
-            text-align: center;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        h1 {
-            margin: 0;
-            font-size: 28px;
-            letter-spacing: 4px;
-        }
+body {
+    margin: 0;
+    background: #06110b;
+    color: #d9f5df;
+    font-family: Arial, sans-serif;
+}
 
-        .subtitle {
-            margin-top: 8px;
-            color: #7fa98a;
-            font-size: 13px;
-        }
+header {
+    background: #091b11;
+    border-bottom: 1px solid #315c3c;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-        main {
-            padding: 20px;
-            max-width: 900px;
-            margin: auto;
-        }
+.logo {
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
 
-        .status {
-            border: 1px solid #315c3f;
-            background: #0c2115;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
+.online {
+    color: #70e58b;
+    font-size: 12px;
+}
 
-        .status-title {
-            color: #78c98b;
-            font-size: 12px;
-            letter-spacing: 2px;
-        }
+main {
+    max-width: 1200px;
+    margin: auto;
+    padding: 15px;
+}
 
-        .status-value {
-            font-size: 24px;
-            margin-top: 8px;
-        }
+.dashboard {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 15px;
+}
 
-        .card {
-            background: #0a1a11;
-            border: 1px solid #294d36;
-            padding: 20px;
-            margin-bottom: 15px;
-        }
+/* MAPA */
 
-        .card h2 {
-            margin-top: 0;
-            color: #9be7a9;
-        }
+.map-container {
+    position: relative;
+    background: #0c2415;
+    border: 1px solid #315c3c;
+    overflow: hidden;
+}
 
-        button {
-            width: 100%;
-            padding: 15px;
-            margin-top: 10px;
-            background: #173b24;
-            color: #d8f3dc;
-            border: 1px solid #4c8b5b;
-            cursor: pointer;
-            font-size: 15px;
-        }
+.map-title {
+    padding: 10px;
+    background: #0a1b10;
+    border-bottom: 1px solid #315c3c;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
 
-        button:hover {
-            background: #225731;
-        }
+#parkMap {
+    width: 100%;
+    display: block;
+    background: #173722;
+}
 
-        #location {
-            margin-top: 15px;
-            color: #9be7a9;
-        }
+/* ZONAS */
 
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: #52705b;
-            font-size: 12px;
-        }
-    </style>
+.zone {
+    fill: #214d2b;
+    stroke: #7aa37e;
+    stroke-width: 2;
+}
+
+.zone-danger {
+    fill: #50301e;
+}
+
+.zone-water {
+    fill: #183f52;
+    stroke: #4f91aa;
+}
+
+.road {
+    fill: none;
+    stroke: #9c936f;
+    stroke-width: 12;
+    opacity: .8;
+}
+
+.road-small {
+    fill: none;
+    stroke: #777052;
+    stroke-width: 6;
+}
+
+/* EDIFICIOS */
+
+.building {
+    fill: #3d4940;
+    stroke: #b2c4b4;
+    stroke-width: 2;
+}
+
+.building-text {
+    fill: white;
+    font-size: 12px;
+    text-anchor: middle;
+}
+
+/* DINOSAURIOS */
+
+.dino {
+    cursor: pointer;
+}
+
+.dino circle {
+    stroke: white;
+    stroke-width: 2;
+}
+
+.dino text {
+    fill: white;
+    font-size: 12px;
+    text-anchor: middle;
+    pointer-events: none;
+}
+
+.dino:hover circle {
+    stroke-width: 4;
+}
+
+/* JUGADOR */
+
+.player {
+    cursor: pointer;
+}
+
+.player circle {
+    fill: #4aa3ff;
+    stroke: white;
+    stroke-width: 3;
+}
+
+.player text {
+    fill: white;
+    font-size: 11px;
+    text-anchor: middle;
+}
+
+/* PANEL */
+
+.panel {
+    background: #0b1c12;
+    border: 1px solid #315c3c;
+    padding: 15px;
+}
+
+.panel h2 {
+    margin-top: 0;
+    font-size: 17px;
+}
+
+.stat {
+    border-bottom: 1px solid #263d2c;
+    padding: 9px 0;
+}
+
+.stat-name {
+    color: #7d9d84;
+    font-size: 11px;
+}
+
+.stat-value {
+    margin-top: 3px;
+}
+
+.danger {
+    color: #ff6b5f;
+}
+
+.safe {
+    color: #70e58b;
+}
+
+.warning {
+    color: #e8bd58;
+}
+
+button,
+select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    background: #122c1a;
+    color: white;
+    border: 1px solid #416d4b;
+    font-size: 14px;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1b4327;
+}
+
+.alert {
+    border-left: 4px solid #e85b50;
+    background: #24130f;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+.legend {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    margin-top: 15px;
+    font-size: 12px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.bottom-menu {
+    margin-top: 15px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+}
+
+.bottom-menu button {
+    margin: 0;
+    font-size: 11px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #54705a;
+    font-size: 11px;
+}
+
+@media (max-width: 800px) {
+
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .bottom-menu {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+</style>
+
 </head>
 
 <body>
 
 <header>
-    <h1>GENESIS PARK</h1>
-    <div class="subtitle">
-        DINOSAUR MONITORING SYSTEM
-    </div>
+
+<div class="logo">
+GENESIS PARK
+</div>
+
+<div class="online">
+● SYSTEM ONLINE
+</div>
+
 </header>
+
 
 <main>
 
-    <div class="status">
-        <div class="status-title">
-            PARK STATUS
-        </div>
+<div class="dashboard">
 
-        <div class="status-value">
-            ● SYSTEM ONLINE
-        </div>
-    </div>
+<!-- MAPA -->
 
-    <div class="card">
-        <h2>🦖 Dinosaur Monitoring</h2>
+<section class="map-container">
 
-        <p>
-            Sistema de seguimiento de fauna prehistórica
-            de Genesis Park.
-        </p>
+<div class="map-title">
+PARK SURVEILLANCE MAP
+</div>
 
-        <button onclick="locatePlayer()">
-            📍 LOCALIZAR MI POSICIÓN
-        </button>
+<svg id="parkMap"
+viewBox="0 0 900 650"
+xmlns="http://www.w3.org/2000/svg">
 
-        <div id="location">
-            Posición: desconocida
-        </div>
-    </div>
+<!-- TERRENO -->
 
-    <div class="card">
-        <h2>🛰️ Parque</h2>
+<rect
+x="0"
+y="0"
+width="900"
+height="650"
+fill="#18351f"/>
 
-        <p>
-            Estado de las instalaciones:
-            <strong>OPERATIVO</strong>
-        </p>
 
-        <p>
-            Señal de comunicación:
-            <strong>ESTABLE</strong>
-        </p>
-    </div>
+<!-- ZONA SELVA -->
 
-    <div class="card">
-        <h2>⚠️ Alertas</h2>
+<path
+class="zone"
+d="M40 50
+L340 40
+L380 180
+L320 280
+L70 250
+Z"/>
 
-        <p>
-            No existen alertas activas.
-        </p>
-    </div>
+<text
+x="190"
+y="120"
+fill="#c5e0c8"
+font-size="18"
+text-anchor="middle">
+NORTH JUNGLE
+</text>
+
+
+<!-- RESERVA HERBÍVOROS -->
+
+<path
+class="zone"
+d="M80 300
+L350 280
+L400 520
+L100 560
+Z"/>
+
+<text
+x="230"
+y="390"
+fill="#c5e0c8"
+font-size="16"
+text-anchor="middle">
+HERBIVORE RESERVE
+</text>
+
+
+<!-- ZONA T-REX -->
+
+<path
+class="zone-danger"
+d="M500 60
+L830 70
+L850 270
+L520 280
+Z"/>
+
+<text
+x="675"
+y="125"
+fill="#ffd0c8"
+font-size="17"
+text-anchor="middle">
+TYRANNOSAUR ZONE
+</text>
+
+
+<!-- ZONA RAPTOR -->
+
+<path
+class="zone-danger"
+d="M520 330
+L840 310
+L850 570
+L500 550
+Z"/>
+
+<text
+x="680"
+y="400"
+fill="#ffd0c8"
+font-size="17"
+text-anchor="middle">
+RAPTOR COMPLEX
+</text>
+
+
+<!-- RÍO -->
+
+<path
+class="zone-water"
+d="M420 0
+C350 100 470 170 410 260
+C350 350 470 430 410 650
+L480 650
+C540 470 430 350 500 260
+C570 160 450 90 500 0
+Z"/>
+
+
+<!-- CARRETERAS -->
+
+<path
+class="road"
+d="M20 590
+C250 550 320 570 450 500
+C570 430 610 350 880 290"/>
+
+<path
+class="road-small"
+d="M450 500
+L450 100"/>
+
+
+<!-- CENTRO CONTROL -->
+
+<rect
+class="building"
+x="380"
+y="430"
+width="140"
+height="75"
+rx="5"/>
+
+<text
+class="building-text"
+x="450"
+y="462">
+CONTROL
+</text>
+
+<text
+class="building-text"
+x="450"
+y="480">
+CENTER
+</text>
+
+
+<!-- LABORATORIO -->
+
+<rect
+class="building"
+x="55"
+y="90"
+width="110"
+height="65"
+rx="5"/>
+
+<text
+class="building-text"
+x="110"
+y="125">
+LAB
+</text>
+
+
+<!-- ENFERMERÍA -->
+
+<rect
+class="building"
+x="250"
+y="475"
+width="100"
+height="55"
+rx="5"/>
+
+<text
+class="building-text"
+x="300"
+y="508">
+MEDICAL
+</text>
+
+
+<!-- PUERTA NORTE -->
+
+<rect
+class="building"
+x="405"
+y="30"
+width="90"
+height="35"/>
+
+<text
+class="building-text"
+x="450"
+y="53">
+GATE N
+</text>
+
+
+<!-- PUERTA SUR -->
+
+<rect
+class="building"
+x="405"
+y="585"
+width="90"
+height="35"/>
+
+<text
+class="building-text"
+x="450"
+y="608">
+GATE S
+</text>
+
+
+<!-- DINOSAURIO 1 -->
+
+<g class="dino"
+data-dino="rex01">
+
+<circle
+cx="670"
+cy="180"
+r="17"
+fill="#c4473f"/>
+
+<text
+x="670"
+y="184">
+T
+</text>
+
+</g>
+
+
+<!-- DINOSAURIO 2 -->
+
+<g class="dino"
+data-dino="raptor01">
+
+<circle
+cx="730"
+cy="450"
+r="14"
+fill="#d86a43"/>
+
+<text
+x="730"
+y="454">
+R
+</text>
+
+</g>
+
+
+<!-- DINOSAURIO 3 -->
+
+<g class="dino"
+data-dino="trike01">
+
+<circle
+cx="200"
+cy="450"
+r="14"
+fill="#71a86b"/>
+
+<text
+x="200"
+y="454">
+H
+</text>
+
+</g>
+
+
+<!-- DINOSAURIO 4 -->
+
+<g class="dino"
+data-dino="stego01">
+
+<circle
+cx="290"
+cy="350"
+r="14"
+fill="#71a86b"/>
+
+<text
+x="290"
+y="354">
+H
+</text>
+
+</g>
+
+
+<!-- JUGADOR -->
+
+<g
+class="player"
+id="playerMarker">
+
+<circle
+cx="450"
+cy="390"
+r="10"/>
+
+<text
+x="450"
+y="415">
+YOU
+</text>
+
+</g>
+
+</svg>
+
+</section>
+
+
+<!-- PANEL INFORMACIÓN -->
+
+<aside class="panel">
+
+<h2 id="panelTitle">
+PARK CONTROL
+</h2>
+
+<div id="panelContent">
+
+<div class="stat">
+
+<div class="stat-name">
+SYSTEM
+</div>
+
+<div class="stat-value safe">
+ONLINE
+</div>
+
+</div>
+
+<div class="stat">
+
+<div class="stat-name">
+TRACKED ANIMALS
+</div>
+
+<div class="stat-value">
+4
+</div>
+
+</div>
+
+<div class="stat">
+
+<div class="stat-name">
+ACTIVE ALERTS
+</div>
+
+<div class="stat-value danger">
+1
+</div>
+
+</div>
+
+</div>
+
+
+<select id="filter">
+
+<option value="all">
+Todos los dinosaurios
+</option>
+
+<option value="danger">
+Especies peligrosas
+</option>
+
+<option value="herbivore">
+Herbívoros
+</option>
+
+</select>
+
+
+<button id="locateButton">
+📍 LOCALIZARME
+</button>
+
+
+<div class="legend">
+
+<div class="legend-item">
+
+<span
+class="legend-dot"
+style="background:#c4473f">
+</span>
+
+T-Rex
+
+</div>
+
+<div class="legend-item">
+
+<span
+class="legend-dot"
+style="background:#d86a43">
+</span>
+
+Raptor
+
+</div>
+
+<div class="legend-item">
+
+<span
+class="legend-dot"
+style="background:#71a86b">
+</span>
+
+Herbívoro
+
+</div>
+
+<div class="legend-item">
+
+<span
+class="legend-dot"
+style="background:#4aa3ff">
+</span>
+
+Jugador
+
+</div>
+
+</div>
+
+
+<div class="alert">
+
+<strong>⚠ ALERTA</strong>
+
+<br><br>
+
+Actividad detectada en
+Raptor Complex.
+
+</div>
+
+</aside>
+
+</div>
+
+
+<!-- MENÚ -->
+
+<div class="bottom-menu">
+
+<button>
+🗺 MAPA
+</button>
+
+<button>
+🦖 DINOSAURIOS
+</button>
+
+<button>
+🚨 ALERTAS
+</button>
+
+<button>
+📚 DATABASE
+</button>
+
+</div>
 
 </main>
 
+
 <footer>
-    GENESIS PARK © 2026
+
+GENESIS PARK
+<br>
+DINOSAUR MONITORING SYSTEM
+
 </footer>
+
 
 <script>
 
-function locatePlayer() {
+/* =========================
+   BASE DE DATOS DINOSAURIOS
+========================= */
 
-    const locationText =
-        document.getElementById("location");
+const dinosaurs = {
 
-    if (!navigator.geolocation) {
+rex01: {
 
-        locationText.innerText =
-            "La geolocalización no está disponible.";
+name: "REX-01",
 
-        return;
-    }
+species: "Tyrannosaurus rex",
 
-    locationText.innerText =
-        "Obteniendo posición...";
+sex: "Macho",
 
-    navigator.geolocation.getCurrentPosition(
+age: "14 años",
 
-        function(position) {
+length: "11,8 m",
 
-            const latitude =
-                position.coords.latitude;
+weight: "7.200 kg",
 
-            const longitude =
-                position.coords.longitude;
+status: "ACTIVO",
 
-            locationText.innerText =
-                "Latitud: " + latitude +
-                " | Longitud: " + longitude;
+danger: "EXTREMO"
 
-        },
+},
 
-        function() {
+raptor01: {
 
-            locationText.innerText =
-                "No se pudo obtener tu posición.";
+name: "RAPTOR-01",
 
-        }
-    );
+species: "Velociraptor",
+
+sex: "Hembra",
+
+age: "8 años",
+
+length: "1,9 m",
+
+weight: "42 kg",
+
+status: "ACTIVO",
+
+danger: "ALTO"
+
+},
+
+trike01: {
+
+name: "TRIKE-01",
+
+species: "Triceratops",
+
+sex: "Macho",
+
+age: "21 años",
+
+length: "8 m",
+
+weight: "6.000 kg",
+
+status: "ACTIVO",
+
+danger: "MEDIO"
+
+},
+
+stego01: {
+
+name: "STEGO-01",
+
+species: "Stegosaurus",
+
+sex: "Hembra",
+
+age: "17 años",
+
+length: "7 m",
+
+weight: "3.100 kg",
+
+status: "ACTIVO",
+
+danger: "BAJO"
+
 }
+
+};
+
+
+/* =========================
+   MOSTRAR DINOSAURIO
+========================= */
+
+const dinosaurMarkers =
+document.querySelectorAll(".dino");
+
+const panelTitle =
+document.getElementById("panelTitle");
+
+const panelContent =
+document.getElementById("panelContent");
+
+
+dinosaurMarkers.forEach(marker => {
+
+marker.addEventListener("click", () => {
+
+const id =
+marker.dataset.dino;
+
+const dino =
+dinosaurs[id];
+
+panelTitle.innerText =
+dino.name;
+
+panelContent.innerHTML = `
+
+<div class="stat">
+
+<div class="stat-name">
+ESPECIE
+</div>
+
+<div class="stat-value">
+${dino.species}
+</div>
+
+</div>
+
+<div class="stat">
+
+<div class="stat-name">
+SEXO
+</div>
+
+<div class="stat-value">
+${dino.sex}
+</div>
+
+</div>
+
+<div class="stat">
+
+<div class="stat-name">
+EDAD
+</div>
+
+<div class="stat-value">
+${dino.age}
+</div>
+
+</div>
+
+<div class="stat">
+
+<div class="stat-name">
+LONGITUD
+</div>
+
+<div class="stat-value">
+${dino.length}
+</div>
+
+</div>
+
+<div class="stat">
+
+<div class="stat-name">
+PESO
+</div>
+
+<div class="stat-value">
+${dino.weight}
+</div>
+
+</div>
+
+<div class="stat">
+
+<div class="stat-name">
+ESTADO
+</div>
+
+<div class="stat-value safe">
+${dino.status}
+</div>
+
+</div>
+
+<div class="stat">
+
+<div class="stat-name">
+NIVEL DE RIESGO
+</div>
+
+<div class="stat-value danger">
+${dino.danger}
+</div>
+
+</div>
+
+`;
+
+});
+
+});
+
+
+/* =========================
+   GPS
+========================= */
+
+const locateButton =
+document.getElementById("locateButton");
+
+locateButton.addEventListener("click", () => {
+
+if (!navigator.geolocation) {
+
+alert(
+"La geolocalización no está disponible."
+);
+
+return;
+
+}
+
+locateButton.innerText =
+"📡 LOCALIZANDO...";
+
+navigator.geolocation.getCurrentPosition(
+
+position => {
+
+locateButton.innerText =
+"📍 POSICIÓN ACTUALIZADA";
+
+alert(
+"Posición obtenida:\n\n" +
+"Latitud: " +
+position.coords.latitude +
+"\nLongitud: " +
+position.coords.longitude
+);
+
+},
+
+error => {
+
+locateButton.innerText =
+"📍 LOCALIZARME";
+
+alert(
+"No se pudo obtener tu posición."
+);
+
+}
+
+);
+
+});
+
+
+/* =========================
+   FILTROS
+========================= */
+
+const filter =
+document.getElementById("filter");
+
+
+filter.addEventListener("change", () => {
+
+const value =
+filter.value;
+
+dinosaurMarkers.forEach(marker => {
+
+const dino =
+dinosaurs[marker.dataset.dino];
+
+let visible = true;
+
+if (value === "danger") {
+
+visible =
+dino.danger === "ALTO" ||
+dino.danger === "EXTREMO";
+
+}
+
+if (value === "herbivore") {
+
+visible =
+dino.species === "Triceratops" ||
+dino.species === "Stegosaurus";
+
+}
+
+marker.style.display =
+visible ? "" : "none";
+
+});
+
+});
 
 </script>
 
 </body>
+
 </html>
