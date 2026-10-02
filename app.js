@@ -18,6 +18,21 @@
    - Estado
    - Posición en el mapa
 ========================================================= */
+/* =========================================================
+   CONEXIÓN CON SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+    "https://mshnjpourgijbegeflhh.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_8dj74GRjYP71Z78GXNql5A_xjJ0yy3C";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
 const dinosaurios = [
 
